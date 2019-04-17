@@ -7,7 +7,7 @@
 #
 
 path = input("Digite o nome do arquivo a ser verificado")
-tabela_TS = {}
+tabela_de_simbolos = {}
 lista_token = []
 tipo_esperado = ""
 
@@ -39,7 +39,7 @@ def peek(l, ch):
 
 
 def inserir_TS(token):
-    global tabela_TS
+    global tabela_de_simbolos
     insert_ts = {token.value: {"Token": token.type}}
     busca_ts = get_ts(token)
     if busca_ts == None:
@@ -49,7 +49,7 @@ def inserir_TS(token):
         exit()
 
 def get_ts(token):
-    global tabela_TS
+    global tabela_de_simbolos
     get_dict = tabela_TS.get(token.value)
     return get_dict
 
@@ -64,10 +64,10 @@ def Z(token):
     I(token)
     S(token)
     print('\nTabela de Simbolos:')
-    for x in tabela_TS:
+    for x in tabela_de_simbolos:
         print('Nome:',x)
-        for y in tabela_TS[x]:
-            print(y,':',tabela_TS[x][y])
+        for y in tabela_de_simbolos[x]:
+            print(y,':', tabela_de_simbolos[x][y])
 
 
 def erro(token, esperado):
