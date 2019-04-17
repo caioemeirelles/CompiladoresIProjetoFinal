@@ -46,7 +46,6 @@ if __name__ == '__main__':
         for i, l in enumerate(input_file):
             tokenizador = nltk.WordPunctTokenizer()
             lista_de_termos = tokenizador.tokenize(l)
-            ################ TESTE TIRAR ISSO print(lista_de_termos)
             for j in lista_de_termos:
                 if j in reservadas:
                     tokens.append(Token(j, "reservada", i))

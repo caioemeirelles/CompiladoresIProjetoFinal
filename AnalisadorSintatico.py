@@ -34,61 +34,39 @@ class Token:
     __repr__ = __str__
 
 
-def tokenizer(l, i):
-    aux = ''
-    tokens = []
-    for a in l:
-        if a in terminais:
-            if aux:
-                if aux == ':=':
-                    tokens.append(Token(aux, "operador", i))
-                    aux = ''
-                    continue
-                if aux in reservadas:
-                   tokens.append(Token(aux, "reservada", i))
-                elif aux in delimitador:
-                    tokens.append(Token(aux, "delimitador", i))
-                elif aux in operador:
-                    tokens.append(Token(aux, "operador", i))
-                elif aux.isalpha():
-                    tokens.append(Token(aux, 'identificador', i))
-                else:
-                    tokens.append(Token(aux, 'invalido', i))
-
-                aux = ''
-            if a == ':' and l[l.index(a)+1] == '=':
-                aux = ':='
-            elif a in delimitador:
-                tokens.append(Token(a, 'delimitador', i))
-            elif a in operador:
-                tokens.append(Token(a, 'operador', i))
-        else:
-            aux+= a
-    else:
-        if aux in reservadas:
-            tokens.append(Token(aux, "reservada", i))
-        elif aux in delimitador:
-            tokens.append(Token(aux, "delimitador", i))
-        elif aux in operador:
-            tokens.append(Token(aux, "operador", i))
-        elif aux.isalpha():
-            tokens.append(Token(aux, 'identificador', i))
-        elif aux:
-            tokens.append(Token(aux, 'invalido', i))
-
-        aux = ''
-    return tokens
+# metodo de erro pro caso de achar um caractere invalido
+def caractere_invalido(aux):
+    print("Caractere invalido: '" + aux + "'")
+    exit(66)  # execute order 66
 
 
 if __name__ == '__main__':
-    with open(path, 'r') as arq:
+    with open(path, 'r') as input_file:
         tokens = []
-        for i, l in enumerate(arq):
-            tokens.append(tokenizer(l, i))
-        for x in range(len(tokens)):
-            print (tokens[x])
+
+        for i, l in enumerate(input_file):
+            tokenizador = nltk.WordPunctTokenizer()
+            lista_de_termos = tokenizador.tokenize(l)
+            for j in lista_de_termos:
+                if j in reservadas:
+                    tokens.append(Token(j, "reservada", i))
+                elif j in delimitador:
+                    tokens.append(Token(j, "delimitador", i))
+                elif j in operador:
+                    tokens.append(Token(j, "operador", i))
+                elif j.isalpha():
+                    tokens.append(Token(j, "identificador", i))
+                elif j:
+                    caractere_invalido(j)
+
+        for i in tokens:
+            print('[', i, ']')
+
         aux = []
-        for linha in tokens:
-            aux += linha
+
+        for l in tokens:
+            aux.append(l)
+
         Z(aux)
+
         print('\nCadeia aceita')
