@@ -101,8 +101,7 @@ def O(tokens):
     tk = tokens[0]
     print("TESTE")
     print(tk)
-    if tk.value != ";":# and tk.value not in reservadas:
-        #erro1("de sintaxe: linha {} | Esperado: ; | Entrada: {}".format(tk.index, ''))
+    if tk.value != ";":
         return
     tokens.pop(0)
     D(tokens)
