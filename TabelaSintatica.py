@@ -10,6 +10,11 @@ tabela_de_simbolos = {}
 lista_de_tokens = []
 tipo_esperado = ""
 
+reservadas = ('var', 'integer', 'real', 'if', 'then')
+terminais = (' ', '\t', '\n', ',', ':', ':=', '+', ',', ';', '=')
+delimitador = (',', ':', ';')
+operador = ('+', '-', ':=', '=')
+
 
 def erro1(message):
     print("Erro: " + message)
@@ -18,8 +23,8 @@ def erro1(message):
 
 def erro2(token, esperado):
     print("Erro de sintaxe: na linha {} o esperado era {}, mas a entrada foi {}"
-          "".format(token.index,esperado, token.value))
-    exit(1)
+          "".format(token.index, esperado, token.value))
+    exit(2)
 
 
 def imprime_tabela():
@@ -93,8 +98,11 @@ def O(tokens):
     verifica_fim_bizarro(tokens)
     if not tokens:
         erro1("Cadeia incompleta")
-    token = tokens[0]
-    if token.value != ";":
+    tk = tokens[0]
+    print("TESTE")
+    print(tk)
+    if tk.value != ";":# and tk.value not in reservadas:
+        #erro1("de sintaxe: linha {} | Esperado: ; | Entrada: {}".format(tk.index, ''))
         return
     tokens.pop(0)
     D(tokens)
@@ -112,8 +120,8 @@ def L(tokens):
 
 def X(tokens):
     verifica_fim_bizarro(tokens)
-    token = tokens[0]
-    if token.value != ",":
+    tk = tokens[0]
+    if tk.value != ",":
         return
     tokens.pop(0)
     L(tokens)
@@ -125,15 +133,17 @@ def S(tokens):
 
     tk = tokens.pop(0)
     if tk.type != 'identificador' and tk.value != 'if':
-        erro2(tk, 'erro idenficador')
+        erro2(tk, 'idenficador')
 
     if tk.type == 'identificador':
         busca = pega_tabela(tk)
-        tipo_esperado = busca.get("Tipo")
-        tk = tokens.pop(0)
+
 
         if busca == None:
             erro1("Variavel nao declarada")
+
+        tipo_esperado = busca.get("Tipo")
+        tk = tokens.pop(0)
 
         if tk.value != ':=':
             erro2(tk, ':=')
